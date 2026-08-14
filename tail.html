@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sudsy Tails Grooming Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF9F1;
+    --cream-deep:#FFF1DF;
+    --pink:#FF6F91;
+    --pink-deep:#E85479;
+    --mint:#5FC49A;
+    --mint-deep:#3FA37D;
+    --blue:#7EC8E3;
+    --yellow:#FFC145;
+    --plum:#2E1F3D;
+    --plum-soft:#5C4E6C;
+    --white:#FFFFFF;
+    --radius-lg: 32px;
+    --radius-md: 20px;
+    --shadow: 0 12px 30px rgba(46,31,61,0.10);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--plum);
+    font-family:'Nunito',sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Baloo 2',cursive;
+    font-weight:700;
+    line-height:1.05;
+    margin:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  /* ---------- Ambient bubbles ---------- */
+  .bubble-field{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+  .bubble{
+    position:absolute;
+    bottom:-10%;
+    border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95), rgba(255,255,255,0.15) 60%, rgba(255,255,255,0.05) 100%);
+    border:1px solid rgba(255,255,255,0.6);
+    animation: rise linear infinite;
+    opacity:0.85;
+  }
+  @keyframes rise{
+    0%{ transform:translateY(0) translateX(0) scale(1); opacity:0; }
+    8%{ opacity:0.9; }
+    100%{ transform:translateY(-620px) translateX(var(--drift,20px)) scale(1.15); opacity:0; }
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,249,241,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:2px solid rgba(46,31,61,0.06);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 32px; max-width:1180px; margin:0 auto;
+  }
+  .logo{display:flex; align-items:center; gap:10px; font-family:'Baloo 2'; font-weight:800; font-size:1.35rem; color:var(--plum);}
+  .logo-badge{
+    width:40px;height:40px;border-radius:50%;
+    background:var(--pink);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--shadow);
+    flex-shrink:0;
+  }
+  .nav-links{display:flex; gap:32px; align-items:center;}
+  .nav-links a{font-weight:700; font-size:0.98rem; color:var(--plum-soft); transition:color .2s;}
+  .nav-links a:hover{color:var(--pink-deep);}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 26px; border-radius:100px;
+    font-weight:800; font-size:0.98rem;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover{transform:translateY(-3px) rotate(-1deg);}
+  .btn:active{transform:translateY(0) rotate(0);}
+  .btn-primary{background:var(--pink); color:var(--white); box-shadow:0 8px 20px rgba(255,111,145,0.4);}
+  .btn-primary:hover{box-shadow:0 12px 26px rgba(255,111,145,0.5);}
+  .btn-ghost{background:var(--white); color:var(--plum); box-shadow:var(--shadow);}
+  .btn-dark{background:var(--plum); color:var(--cream); box-shadow:0 8px 20px rgba(46,31,61,0.3);}
+  .menu-toggle{display:none; background:none; padding:8px;}
+  .menu-toggle span{display:block; width:26px; height:3px; background:var(--plum); margin:5px 0; border-radius:2px;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding:76px 0 40px;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:40px; align-items:center;
+    position:relative; z-index:2;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--white); padding:8px 16px; border-radius:100px;
+    font-weight:800; font-size:0.82rem; letter-spacing:0.03em; text-transform:uppercase;
+    color:var(--pink-deep); box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .hero h1{font-size:clamp(2.4rem, 4.6vw, 3.6rem); color:var(--plum);}
+  .hero h1 .accent{color:var(--pink);}
+  .hero p.lead{
+    font-size:1.15rem; color:var(--plum-soft); max-width:480px; margin:20px 0 30px; font-weight:600;
+  }
+  .hero-ctas{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:28px;}
+  .trust-row{display:flex; align-items:center; gap:14px; font-weight:700; color:var(--plum-soft); font-size:0.92rem;}
+  .paw-rating{display:flex; gap:3px;}
+  .paw-rating svg{width:18px;height:18px;}
+
+  .hero-art{position:relative;}
+  .tub-illustration{width:100%; height:auto; filter:drop-shadow(0 20px 30px rgba(46,31,61,0.15));}
+
+  /* ---------- Wavy divider ---------- */
+  .wave{display:block; width:100%; line-height:0;}
+  .wave svg{width:100%; height:70px;}
+
+  /* ---------- Services ---------- */
+  .section{padding:90px 0;}
+  .section-head{max-width:600px; margin:0 auto 56px; text-align:center;}
+  .section-head .kicker{
+    display:inline-block; font-weight:800; color:var(--mint-deep); text-transform:uppercase;
+    letter-spacing:0.08em; font-size:0.85rem; margin-bottom:10px;
+  }
+  .section-head h2{font-size:clamp(1.9rem,3vw,2.6rem); color:var(--plum);}
+  .section-head p{color:var(--plum-soft); font-weight:600; margin-top:14px; font-size:1.05rem;}
+
+  .services{background:var(--cream-deep);}
+  .service-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  }
+  .service-card{
+    background:var(--white); border-radius:var(--radius-md); padding:30px 26px;
+    box-shadow:var(--shadow); transition:transform .25s ease, box-shadow .25s ease;
+    position:relative; overflow:hidden;
+  }
+  .service-card:hover{transform:translateY(-6px); box-shadow:0 18px 34px rgba(46,31,61,0.14);}
+  .service-icon{
+    width:56px;height:56px;border-radius:16px; display:flex; align-items:center; justify-content:center;
+    margin-bottom:18px; font-size:1.5rem;
+  }
+  .service-card h3{font-size:1.25rem; margin-bottom:8px; color:var(--plum);}
+  .service-card p{color:var(--plum-soft); font-weight:600; font-size:0.95rem; margin:0 0 16px; line-height:1.5;}
+  .service-price{font-weight:800; color:var(--pink-deep); font-size:1.05rem;}
+
+  /* ---------- Why us ---------- */
+  .why-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:26px;}
+  .why-item{text-align:center; padding:0 10px;}
+  .why-icon{
+    width:76px;height:76px;border-radius:50%; margin:0 auto 18px;
+    display:flex;align-items:center;justify-content:center; font-size:2rem;
+    box-shadow:var(--shadow);
+  }
+  .why-item h3{font-size:1.08rem; margin-bottom:8px;}
+  .why-item p{color:var(--plum-soft); font-weight:600; font-size:0.92rem; line-height:1.5;}
+
+  /* ---------- Team ---------- */
+  .team{background:var(--cream-deep);}
+  .team-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:22px;}
+  .team-card{background:var(--white); border-radius:var(--radius-md); padding:26px 20px; text-align:center; box-shadow:var(--shadow);}
+  .avatar{
+    width:84px;height:84px;border-radius:50%; margin:0 auto 14px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Baloo 2'; font-weight:700; font-size:1.5rem; color:var(--white);
+  }
+  .team-card h3{font-size:1.05rem; margin-bottom:4px;}
+  .team-card span{font-weight:700; color:var(--mint-deep); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.04em;}
+
+  /* ---------- Testimonials ---------- */
+  .testi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .testi-card{
+    background:var(--white); border-radius:var(--radius-md); padding:28px 26px; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .testi-card p{font-weight:700; color:var(--plum); font-size:1.02rem; line-height:1.55; font-style:italic;}
+  .testi-foot{display:flex; align-items:center; gap:12px; margin-top:auto;}
+  .testi-avatar{width:44px;height:44px;border-radius:50%; display:flex;align-items:center;justify-content:center; font-family:'Baloo 2'; color:var(--white); font-weight:700;}
+  .testi-name{font-weight:800; font-size:0.92rem;}
+  .testi-pet{font-weight:600; color:var(--plum-soft); font-size:0.82rem;}
+
+  /* ---------- CTA banner ---------- */
+  .cta-banner{
+    background:var(--plum); color:var(--cream); border-radius:var(--radius-lg);
+    padding:64px 48px; text-align:center; position:relative; overflow:hidden;
+    margin:0 32px;
+  }
+  .cta-banner h2{color:var(--cream); font-size:clamp(1.8rem,3.2vw,2.5rem); margin-bottom:14px;}
+  .cta-banner p{color:#C9BFDA; font-weight:700; margin-bottom:30px; font-size:1.05rem;}
+  .cta-banner .btn-primary{background:var(--yellow); color:var(--plum); box-shadow:0 8px 22px rgba(255,193,69,0.4);}
+
+  /* ---------- Booking ---------- */
+  .booking{padding:90px 0;}
+  .booking-panel{
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:0;
+    background:var(--white); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow);
+  }
+  .booking-side{
+    background:var(--mint); color:var(--white); padding:48px 40px;
+    display:flex; flex-direction:column; justify-content:center; gap:18px;
+    position:relative;
+  }
+  .booking-side h2{color:var(--white); font-size:2rem;}
+  .booking-side p{font-weight:700; opacity:0.95; line-height:1.6;}
+  .booking-list{list-style:none; padding:0; margin:8px 0 0; display:flex; flex-direction:column; gap:12px;}
+  .booking-list li{display:flex; align-items:center; gap:10px; font-weight:700;}
+  .booking-form{padding:48px 40px; display:flex; flex-direction:column; gap:18px;}
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field label{font-weight:800; font-size:0.85rem; color:var(--plum-soft);}
+  .field input, .field select{
+    padding:13px 16px; border-radius:12px; border:2px solid var(--cream-deep);
+    font-family:'Nunito'; font-weight:700; font-size:0.95rem; color:var(--plum);
+    background:var(--cream); outline:none; transition:border-color .2s;
+  }
+  .field input:focus, .field select:focus{border-color:var(--pink);}
+  .form-confirm{
+    display:none; background:var(--cream-deep); border-radius:12px; padding:16px 18px;
+    font-weight:800; color:var(--mint-deep); align-items:center; gap:10px;
+  }
+  .form-confirm.show{display:flex;}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--plum); color:#D8CFE6; padding:56px 0 28px;}
+  .footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:36px; margin-bottom:40px;}
+  .footer-logo{display:flex; align-items:center; gap:10px; font-family:'Baloo 2'; font-weight:800; font-size:1.25rem; color:var(--cream); margin-bottom:12px;}
+  footer h4{color:var(--cream); font-size:0.95rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:16px;}
+  footer p, footer a{color:#C9BFDA; font-weight:600; font-size:0.92rem; line-height:1.8;}
+  footer a:hover{color:var(--pink);}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,0.1); padding-top:22px; text-align:center; font-size:0.85rem; color:#9C8FB3;}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:920px){
+    .nav-links{display:none;}
+    .menu-toggle{display:block;}
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-art{order:-1; max-width:340px; margin:0 auto;}
+    .service-grid{grid-template-columns:repeat(2,1fr);}
+    .why-grid{grid-template-columns:repeat(2,1fr);}
+    .team-grid{grid-template-columns:repeat(2,1fr);}
+    .testi-grid{grid-template-columns:1fr;}
+    .booking-panel{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:600px){
+    .wrap{padding:0 20px;}
+    .service-grid, .why-grid, .team-grid{grid-template-columns:1fr;}
+    .form-row{grid-template-columns:1fr;}
+    .cta-banner{margin:0 20px; padding:44px 24px;}
+    .footer-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#top" class="logo">
+      <span class="logo-badge">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 14c-3.3 0-6 2.6-6 5.2 0 1 .8 1.8 2 1.8 1.4 0 2-.8 4-.8s2.6.8 4 .8c1.2 0 2-.8 2-1.8 0-2.6-2.7-5.2-6-5.2z" fill="#fff"/><ellipse cx="6.5" cy="9" rx="1.8" ry="2.2" fill="#fff"/><ellipse cx="17.5" cy="9" rx="1.8" ry="2.2" fill="#fff"/><ellipse cx="10.2" cy="5.5" rx="1.6" ry="2" fill="#fff"/><ellipse cx="13.8" cy="5.5" rx="1.6" ry="2" fill="#fff"/></svg>
+      </span>
+      Sudsy Tails
+    </a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#why">Why Us</a>
+      <a href="#team">Groomers</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#book" class="btn btn-primary">Book Now</a>
+    </div>
+    <button class="menu-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="bubble-field" id="heroBubbles"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">🐾 Now booking same-week slots</span>
+      <h1>Where tails wag<br>and coats <span class="accent">shine.</span></h1>
+      <p class="lead">Fear-free grooming for dogs & cats, done by people who genuinely love the fluff. Baths, cuts, and nail trims — no stress, all treats.</p>
+      <div class="hero-ctas">
+        <a href="#book" class="btn btn-primary">Book a Groom 🛁</a>
+        <a href="#services" class="btn btn-ghost">See Services</a>
+      </div>
+      <div class="trust-row">
+        <span class="paw-rating">
+          <svg viewBox="0 0 24 24" fill="#FFC145"><path d="M12 14c-3.3 0-6 2.6-6 5.2 0 1 .8 1.8 2 1.8 1.4 0 2-.8 4-.8s2.6.8 4 .8c1.2 0 2-.8 2-1.8 0-2.6-2.7-5.2-6-5.2z"/><ellipse cx="6.5" cy="9" rx="1.8" ry="2.2"/><ellipse cx="17.5" cy="9" rx="1.8" ry="2.2"/><ellipse cx="10.2" cy="5.5" rx="1.6" ry="2"/><ellipse cx="13.8" cy="5.5" rx="1.6" ry="2"/></svg>
+          <svg viewBox="0 0 24 24" fill="#FFC145"><path d="M12 14c-3.3 0-6 2.6-6 5.2 0 1 .8 1.8 2 1.8 1.4 0 2-.8 4-.8s2.6.8 4 .8c1.2 0 2-.8 2-1.8 0-2.6-2.7-5.2-6-5.2z"/><ellipse cx="6.5" cy="9" rx="1.8" ry="2.2"/><ellipse cx="17.5" cy="9" rx="1.8" ry="2.2"/><ellipse cx="10.2" cy="5.5" rx="1.6" ry="2"/><ellipse cx="13.8" cy="5.5" rx="1.6" ry="2"/></svg>
+          <svg viewBox="0 0 24 24" fill="#FFC145"><path d="M12 14c-3.3 0-6 2.6-6 5.2 0 1 .8 1.8 2 1.8 1.4 0 2-.8 4-.8s2.6.8 4 .8c1.2 0 2-.8 2-1.8 0-2.6-2.7-5.2-6-5.2z"/><ellipse cx="6.5" cy="9" rx="1.8" ry="2.2"/><ellipse cx="17.5" cy="9" rx="1.8" ry="2.2"/><ellipse cx="10.2" cy="5.5" rx="1.6" ry="2"/><ellipse cx="13.8" cy="5.5" rx="1.6" ry="2"/></svg>
+          <svg viewBox="0 0 24 24" fill="#FFC145"><path d="M12 14c-3.3 0-6 2.6-6 5.2 0 1 .8 1.8 2 1.8 1.4 0 2-.8 4-.8s2.6.8 4 .8c1.2 0 2-.8 2-1.8 0-2.6-2.7-5.2-6-5.2z"/><ellipse cx="6.5" cy="9" rx="1.8" ry="2.2"/><ellipse cx="17.5" cy="9" rx="1.8" ry="2.2"/><ellipse cx="10.2" cy="5.5" rx="1.6" ry="2"/><ellipse cx="13.8" cy="5.5" rx="1.6" ry="2"/></svg>
+          <svg viewBox="0 0 24 24" fill="#FFC145"><path d="M12 14c-3.3 0-6 2.6-6 5.2 0 1 .8 1.8 2 1.8 1.4 0 2-.8 4-.8s2.6.8 4 .8c1.2 0 2-.8 2-1.8 0-2.6-2.7-5.2-6-5.2z"/><ellipse cx="6.5" cy="9" rx="1.8" ry="2.2"/><ellipse cx="17.5" cy="9" rx="1.8" ry="2.2"/><ellipse cx="10.2" cy="5.5" rx="1.6" ry="2"/><ellipse cx="13.8" cy="5.5" rx="1.6" ry="2"/></svg>
+        </span>
+        4.9 from 620+ good boys & girls
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg class="tub-illustration" viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="210" cy="330" rx="150" ry="18" fill="#2E1F3D" opacity="0.06"/>
+        <path d="M60 200 h300 a20 20 0 0 1 20 20 v40 a80 80 0 0 1 -80 80 h-180 a80 80 0 0 1 -80 -80 v-40 a20 20 0 0 1 20 -20 z" fill="#7EC8E3"/>
+        <rect x="55" y="190" width="310" height="22" rx="11" fill="#5FC49A"/>
+        <path d="M75 215 q135 22 270 0 v18 q-135 20 -270 0 z" fill="#FFFFFF" opacity="0.85"/>
+        <circle cx="120" cy="205" r="7" fill="#fff" opacity="0.9"/>
+        <circle cx="300" cy="208" r="9" fill="#fff" opacity="0.9"/>
+        <circle cx="230" cy="200" r="5" fill="#fff" opacity="0.9"/>
+        <g>
+          <ellipse cx="210" cy="235" rx="95" ry="70" fill="#FFFFFF"/>
+          <ellipse cx="150" cy="205" rx="30" ry="26" fill="#FFFFFF"/>
+          <ellipse cx="270" cy="205" rx="30" ry="26" fill="#FFFFFF"/>
+          <ellipse cx="128" cy="185" rx="15" ry="20" fill="#FFE8E0" transform="rotate(-20 128 185)"/>
+          <ellipse cx="292" cy="185" rx="15" ry="20" fill="#FFE8E0" transform="rotate(20 292 185)"/>
+          <circle cx="182" cy="215" r="6" fill="#2E1F3D"/>
+          <circle cx="238" cy="215" r="6" fill="#2E1F3D"/>
+          <ellipse cx="210" cy="238" rx="10" ry="7" fill="#FF6F91"/>
+          <path d="M195 250 q15 12 30 0" stroke="#2E1F3D" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M150 175 q-8 -14 2 -22" stroke="#5FC49A" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </g>
+        <circle cx="90" cy="140" r="14" fill="#fff" stroke="#7EC8E3" stroke-width="2" opacity="0.9"/>
+        <circle cx="330" cy="120" r="20" fill="#fff" stroke="#7EC8E3" stroke-width="2" opacity="0.9"/>
+        <circle cx="300" cy="70" r="11" fill="#fff" stroke="#7EC8E3" stroke-width="2" opacity="0.8"/>
+        <circle cx="130" cy="90" r="9" fill="#fff" stroke="#7EC8E3" stroke-width="2" opacity="0.8"/>
+        <circle cx="200" cy="50" r="13" fill="#fff" stroke="#FFC145" stroke-width="2" opacity="0.85"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,32 C240,70 480,0 720,20 C960,40 1200,70 1440,30 L1440,70 L0,70 Z" fill="#FFF1DF"/></svg>
+</div>
+
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Services & Pricing</span>
+      <h2>Pick a package, pick a treat</h2>
+      <p>Every groom includes a gentle shampoo, ear check, and a bandana to show off. Prices vary by size and coat.</p>
+    </div>
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="service-icon" style="background:#FFE3EA;">🫧</div>
+        <h3>Bath & Brush</h3>
+        <p>A full rinse, blow-dry, and de-shed brush-out. Perfect for regular upkeep between full grooms.</p>
+        <div class="service-price">From $35</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" style="background:#DFF5EA;">✂️</div>
+        <h3>Full Groom</h3>
+        <p>Bath, haircut, nail trim, ear cleaning, and a paw pad tidy — the whole spa day, breed-standard or custom.</p>
+        <div class="service-price">From $65</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" style="background:#E4F1FB;">💅</div>
+        <h3>Nail Trim & File</h3>
+        <p>Quick, calm, and quiet — for pets who just need the essentials without the full works.</p>
+        <div class="service-price">From $15</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" style="background:#FFF3D6;">🐕</div>
+        <h3>De-Shedding Treatment</h3>
+        <p>Deep undercoat treatment that cuts loose fur by up to 90%. Your couch will thank you.</p>
+        <div class="service-price">From $45</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" style="background:#F1E5FB;">🐾</div>
+        <h3>Puppy's First Groom</h3>
+        <p>Slow, reward-based introduction to grooming tools — building good associations from day one.</p>
+        <div class="service-price">From $30</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" style="background:#FFE9DD;">🐈</div>
+        <h3>Cat Grooming</h3>
+        <p>Low-stress handling for cats, including mat removal and a light trim. Carriers welcome, hissing tolerated.</p>
+        <div class="service-price">From $40</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Why Sudsy Tails</span>
+      <h2>Handled with actual care</h2>
+      <p>We built our whole process around one rule: nothing happens if your pet isn't comfortable with it.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-icon" style="background:#FF6F91;">😊</div>
+        <h3>Fear-free handling</h3>
+        <p>Certified in low-stress techniques — we go at your pet's pace, always.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon" style="background:#5FC49A;">🎓</div>
+        <h3>Certified groomers</h3>
+        <p>Every groomer trains 200+ hours before touching their first clipper.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon" style="background:#7EC8E3;">⏱️</div>
+        <h3>Same-week slots</h3>
+        <p>Book online in under a minute, with openings most weeks.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon" style="background:#FFC145;">🌿</div>
+        <h3>Gentle, eco shampoo</h3>
+        <p>Plant-based, tear-free, and safe for sensitive skin and allergies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="team" id="team">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Meet the Team</span>
+      <h2>The hands (and treats) behind every groom</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="avatar" style="background:#FF6F91;">MR</div>
+        <h3>Mara R.</h3>
+        <span>Lead Groomer, 9 yrs</span>
+      </div>
+      <div class="team-card">
+        <div class="avatar" style="background:#5FC49A;">DT</div>
+        <h3>Diego T.</h3>
+        <span>Cat Specialist</span>
+      </div>
+      <div class="team-card">
+        <div class="avatar" style="background:#7EC8E3;">JL</div>
+        <h3>Jun L.</h3>
+        <span>Puppy Grooming</span>
+      </div>
+      <div class="team-card">
+        <div class="avatar" style="background:#FFC145;">SO</div>
+        <h3>Sam O.</h3>
+        <span>Bath & De-Shed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Happy Customers</span>
+      <h2>620+ good boys & girls agree</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <p>"They took the time to let Biscuit sniff every tool before starting. He came home tired and smelling amazing."</p>
+        <div class="testi-foot">
+          <div class="testi-avatar" style="background:#FF6F91;">A</div>
+          <div>
+            <div class="testi-name">Anya P.</div>
+            <div class="testi-pet">Owner of Biscuit, Golden Retriever</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p>"My cat hates everyone. She tolerated Diego. That's basically a five-star review in cat language."</p>
+        <div class="testi-foot">
+          <div class="testi-avatar" style="background:#5FC49A;">K</div>
+          <div>
+            <div class="testi-name">Kwame B.</div>
+            <div class="testi-pet">Owner of Miso, Tabby Cat</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p>"Booking took two minutes, they texted photos mid-groom, and Ziggy pranced out looking like a show dog."</p>
+        <div class="testi-foot">
+          <div class="testi-avatar" style="background:#7EC8E3;">R</div>
+          <div>
+            <div class="testi-name">Rosa M.</div>
+            <div class="testi-pet">Owner of Ziggy, Poodle Mix</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="cta-banner">
+    <div class="bubble-field" id="ctaBubbles"></div>
+    <h2 style="position:relative;">Ready to spoil your pet a little?</h2>
+    <p style="position:relative;">Slots fill fast on weekends — grab one before Fluffy grabs the couch cushions again.</p>
+    <a href="#book" class="btn btn-primary" style="position:relative;">Book a Groom 🛁</a>
+  </div>
+</div>
+
+<section class="booking" id="book">
+  <div class="wrap">
+    <div class="booking-panel">
+      <div class="booking-side">
+        <h2>Reserve your spot</h2>
+        <p>Fill in a few details and we'll confirm your appointment within a couple hours. No account needed.</p>
+        <ul class="booking-list">
+          <li>✔️ Free consultation for first-timers</li>
+          <li>✔️ Text reminders the day before</li>
+          <li>✔️ Cancel or reschedule anytime</li>
+        </ul>
+      </div>
+      <form class="booking-form" id="bookingForm">
+        <div class="form-row">
+          <div class="field">
+            <label for="ownerName">Your name</label>
+            <input type="text" id="ownerName" placeholder="Jamie Chen" required>
+          </div>
+          <div class="field">
+            <label for="petName">Pet's name</label>
+            <input type="text" id="petName" placeholder="Waffles" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="service">Service</label>
+            <select id="service" required>
+              <option value="">Choose a service</option>
+              <option>Bath & Brush</option>
+              <option>Full Groom</option>
+              <option>Nail Trim & File</option>
+              <option>De-Shedding Treatment</option>
+              <option>Puppy's First Groom</option>
+              <option>Cat Grooming</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="date">Preferred date</label>
+            <input type="date" id="date" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input type="tel" id="phone" placeholder="(555) 123-4567" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="justify-content:center;">Reserve My Spot 🐾</button>
+        <div class="form-confirm" id="formConfirm">🎉 Thanks! We'll text you a confirmation shortly.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <span class="logo-badge" style="width:32px;height:32px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 14c-3.3 0-6 2.6-6 5.2 0 1 .8 1.8 2 1.8 1.4 0 2-.8 4-.8s2.6.8 4 .8c1.2 0 2-.8 2-1.8 0-2.6-2.7-5.2-6-5.2z" fill="#fff"/><ellipse cx="6.5" cy="9" rx="1.8" ry="2.2" fill="#fff"/><ellipse cx="17.5" cy="9" rx="1.8" ry="2.2" fill="#fff"/><ellipse cx="10.2" cy="5.5" rx="1.6" ry="2" fill="#fff"/><ellipse cx="13.8" cy="5.5" rx="1.6" ry="2" fill="#fff"/></svg>
+          </span>
+          Sudsy Tails
+        </div>
+        <p>Fear-free grooming for dogs and cats. Baths, cuts, and happy tails since 2016.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <p><a href="#services">Services</a></p>
+        <p><a href="#why">Why Us</a></p>
+        <p><a href="#team">Groomers</a></p>
+        <p><a href="#reviews">Reviews</a></p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <p>412 Maple Street<br>Leesburg, VA 20175</p>
+        <p>Mon–Sat: 8am–6pm<br>Sun: Closed</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p><a href="tel:5551234567">(555) 123-4567</a></p>
+        <p><a href="mailto:hello@sudsytails.com">hello@sudsytails.com</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Sudsy Tails Grooming Co. All paws reserved.</div>
+  </div>
+</footer>
+
+<script>
+  // Ambient floating bubbles
+  function spawnBubbles(containerId, count){
+    const el = document.getElementById(containerId);
+    if(!el) return;
+    for(let i=0;i<count;i++){
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = 10 + Math.random()*34;
+      b.style.width = size+'px';
+      b.style.height = size+'px';
+      b.style.left = (Math.random()*100)+'%';
+      b.style.setProperty('--drift', (Math.random()*60-30)+'px');
+      const duration = 9 + Math.random()*10;
+      b.style.animationDuration = duration+'s';
+      b.style.animationDelay = (Math.random()*duration)+'s';
+      el.appendChild(b);
+    }
+  }
+  spawnBubbles('heroBubbles', 16);
+  spawnBubbles('ctaBubbles', 10);
+
+  // Booking form fake-submit
+  const form = document.getElementById('bookingForm');
+  const confirm = document.getElementById('formConfirm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    confirm.classList.add('show');
+    form.querySelectorAll('input,select').forEach(f => f.disabled = true);
+    form.querySelector('button[type="submit"]').textContent = 'Spot Reserved ✔️';
+  });
+
+  // Mobile nav
+  document.addEventListener('click', function(e){
+    const nav = document.querySelector('.nav-links');
+    if(!e.target.closest('.nav-links') && !e.target.closest('.menu-toggle')){
+      nav.classList.remove('open');
+    }
+  });
+</script>
+
+</body>
+</html>
